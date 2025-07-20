@@ -51,7 +51,9 @@ services:
     restart: unless-stopped
 
 networks:
-  prokutindv-my-netology-hw:  
+  prokutindv-my-netology-hw:
+    external: true
+    name: prokutindv-my-netology-hw
     driver: bridge
     ipam:
       config:
