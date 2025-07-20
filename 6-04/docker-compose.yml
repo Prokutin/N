@@ -5,6 +5,16 @@ volumes:
     grafana_data: {}
 
 services:
+  pushgateway:
+    image: prom/pushgateway
+    container_name: prokutindv-netology-pushgateway
+    expose:
+      - 9091
+    ports:
+      - "9091:9091"
+    networks:
+        - prokutindv-my-netology-hw
+    restart: always
   prometheus:
       image: prom/prometheus
       container_name: prokutindv-netology-prometheus
@@ -26,16 +36,6 @@ services:
       depends_on:
       - pushgateway
 
-  pushgateway:
-    image: prom/pushgateway
-    container_name: prokutindv-netology-pushgateway
-    expose:
-      - 9091
-    ports:
-      - "9091:9091"
-    networks:
-        - prokutindv-my-netology-hw
-    restart: always
   grafana:
     image: grafana/grafana
     container_name: prokutindv-netology-grafana
