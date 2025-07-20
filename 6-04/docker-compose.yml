@@ -36,7 +36,20 @@ services:
     networks:
         - prokutindv-my-netology-hw
     restart: always
-
+  grafana:
+    image: grafana/grafana
+    container_name: prokutindv-netology-grafana
+    user: "472"
+    depends_on:
+      - prometheus
+    ports:
+      - 3000:3000
+    volumes:
+      - grafana_data:/var/lib/grafana
+      - ./grafana/grafana.ini:/etc/grafana/grafana.ini
+    networks:
+        - prokutindv-my-netology-hw
+    restart: always
 
 networks:
   prokutindv-my-netology-hw:  
