@@ -13,29 +13,28 @@ services:
     ports:
       - "9091:9091"
     networks:
-        - prokutindv-my-netology-hw
-    restart: always
+      - prokutindv-my-netology-hw
+    restart: unless-stopped
   prometheus:
-      image: prom/prometheus
-      container_name: prokutindv-netology-prometheus
-      volumes:
-        - ./prometheus:/etc/prometheus
-        - prometheus_data:/prometheus
-      command:
-        - '--config.file=/etc/prometheus/prometheus.yml'
-        - '--storage.tsdb.path=/prometheus'
-        - '--web.console.libraries=/usr/share/prometheus/console_libraries'
-        - '--web.console.templates=/usr/share/prometheus/consoles'
-      ports:
-        - 9090:9090
-      networks:
-        - prokutindv-my-netology-hw
-      restart: always
-      links:
+    image: prom/prometheus
+    container_name: prokutindv-netology-prometheus
+    volumes:
+      - ./prometheus:/etc/prometheus
+      - prometheus_data:/prometheus
+    command:
+      - '--config.file=/etc/prometheus/prometheus.yml'
+      - '--storage.tsdb.path=/prometheus'
+      - '--web.console.libraries=/usr/share/prometheus/console_libraries'
+      - '--web.console.templates=/usr/share/prometheus/consoles'
+    ports:
+      - 9090:9090
+    networks:
+      - prokutindv-my-netology-hw
+    restart: unless-stopped
+    links:
       - pushgateway:pushgateway
-      depends_on:
+    depends_on:
       - pushgateway
-
   grafana:
     image: grafana/grafana
     container_name: prokutindv-netology-grafana
@@ -48,8 +47,8 @@ services:
       - grafana_data:/var/lib/grafana
       - ./grafana/grafana.ini:/etc/grafana/grafana.ini
     networks:
-        - prokutindv-my-netology-hw
-    restart: always
+      - prokutindv-my-netology-hw
+    restart: unless-stopped
 
 networks:
   prokutindv-my-netology-hw:  
