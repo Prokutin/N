@@ -1,0 +1,14 @@
+---
+- name: Download and extract Kafka
+  hosts: all
+  tasks:
+    - name: Download Kafka archive
+      get_url:
+        url: https://dlcdn.apache.org/kafka/3.9.1/kafka_2.13-3.9.1.tgz
+        dest: ~/kafka_2.13-3.9.1.tgz
+
+    - name: Extract Kafka archive
+      unarchive:
+        src: ~/kafka_2.13-3.9.1.tgz
+        dest: ~/
+        remote_src: yes
