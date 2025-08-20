@@ -1,0 +1,38 @@
+- name: Change MOTD greeting message
+  hosts: all
+  become: yes
+  vars:
+    motd_greeting: "Добро пожаловать !"
+  
+  tasks:
+    - name: Get IP address
+      shell: hostname -I | awk '{print $1}'
+      register: ip_address
+      changed_when: false
+
+    - name: Get hostname
+      shell: hostname
+      register: hostname_result
+      changed_when: false
+
+    - name: Create custom MOTD file
+      copy:
+        content: |
+          {{ motd_greeting }}
+          
+          Информация о системе:
+          Хост: {{ hostname_result.stdout }}
+          IP-адрес: {{ ip_address.stdout }}
+          Управляемый хост: {{ inventory_hostname }}
+        dest: /etc/motd
+        owner: root
+        group: root
+        mode: '0644'
+
+    - name: Show new MOTD content
+      debug:
+        msg: |
+          Новое приветствие: {{ motd_greeting }}
+          Хост: {{ hostname_result.stdout }}
+          IP-адрес: {{ ip_address.stdout }}
+          Управляемый хост: {{ inventory_hostname }}
