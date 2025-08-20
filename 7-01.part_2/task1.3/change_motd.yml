@@ -1,0 +1,19 @@
+---
+- name: Change MOTD greeting message
+  hosts: all
+  become: yes
+  vars:
+    motd_greeting: "Добро пожаловать !!!!!"
+  
+  tasks:
+    - name: Create custom MOTD file
+      copy:
+        content: "{{ motd_greeting }}\n\n"
+        dest: /etc/motd
+        owner: root
+        group: root
+        mode: '0644'
+
+    - name: Show new MOTD content
+      debug:
+        msg: "Новое приветствие: {{ motd_greeting }}"
