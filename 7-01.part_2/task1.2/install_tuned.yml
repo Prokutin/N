@@ -1,0 +1,22 @@
+---
+- name: Install and configure tuned daemon
+  hosts: all
+  become: yes
+  tasks:
+    - name: Install tuned package
+      package:
+        name: tuned
+        state: present
+
+    - name: Ensure tuned service is running and enabled
+      systemd:
+        name: tuned
+        state: started
+        enabled: yes
+
+    - name: Check tuned service status
+      service_facts:
+
+    - name: Display service status
+      debug:
+        var: ansible_facts.services.tuned.state
