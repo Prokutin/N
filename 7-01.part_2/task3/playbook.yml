@@ -1,0 +1,21 @@
+---
+- name: Deploy Apache web server with system info
+  hosts: all
+  become: yes
+  gather_facts: yes
+  
+  roles:
+    - apache_server
+  
+  tasks:
+    - name: Verify website is accessible
+      ansible.builtin.uri:
+        url: "http://{{ ansible_default_ipv4.address }}"
+        return_content: yes
+        status_code: 200
+      register: website_result
+      changed_when: false
+      
+    - name: Display website verification result
+      ansible.builtin.debug:
+        msg: "Website is accessible. Status: {{ website_result.status }}"
